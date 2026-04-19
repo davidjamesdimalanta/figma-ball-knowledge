@@ -11,7 +11,10 @@
       "name": "figma-harness",
       "description": "Self-healing harness for Figma design work. Runs parallel discovery, resolves URL targets, auto-loads file-specific design skills, selects the API capabilities needed for the task, emits an execution plan before any write, and captures new knowledge into durable files.",
       "category": "design",
-      "source": "../figma-harness"
+      "source": {
+        "source": "url",
+        "url": "https://github.com/davidjamesdimalanta/figma-harness.git"
+      }
     }
   ]
 }
