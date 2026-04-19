@@ -1,6 +1,6 @@
 {
   "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
-  "name": "figma-plugins",
+  "name": "figma-ball-knowledge",
   "description": "Personal Figma workflow plugins for Claude Code",
   "owner": {
     "name": "David Dimalanta",
