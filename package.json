@@ -1,7 +1,7 @@
 {
   "name": "figma-ball-knowledge",
-  "version": "1.0.0",
-  "description": "Claude Code marketplace: Figma workflow plugins by David Dimalanta",
+  "version": "2.0.0",
+  "description": "Figma workflow skills for Claude Code: an orchestrator that parses designer intent, runs discovery against the Figma MCP, and progressively discloses capability files for frames, components, tokens, vectors, documentation, and code.",
   "files": [
     ".claude-plugin",
     "plugins"
