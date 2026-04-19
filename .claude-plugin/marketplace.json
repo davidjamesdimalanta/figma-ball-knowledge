@@ -1,21 +1,18 @@
 {
   "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
   "name": "figma-ball-knowledge",
-  "description": "Personal Figma workflow plugins for Claude Code",
+  "description": "Figma workflow skills for Claude Code",
   "owner": {
     "name": "David Dimalanta",
     "email": "david.dimalanta@mail.utoronto.ca"
   },
   "plugins": [
     {
-      "name": "figma-harness",
-      "description": "Self-healing harness for Figma design work. Runs parallel discovery, resolves URL targets, auto-loads file-specific design skills, selects the API capabilities needed for the task, emits an execution plan before any write, and captures new knowledge into durable files.",
+      "name": "figma-ball-knowledge",
+      "description": "Orchestrator skill for Figma design work. Parses designer intent, runs discovery against the Figma MCP, resolves URL targets, and progressively discloses capability files for reading, frames, components, tokens, vectors, documentation, files, and code.",
       "version": "1.0.0",
       "category": "design",
-      "source": {
-        "source": "url",
-        "url": "https://github.com/davidjamesdimalanta/figma-harness.git"
-      }
+      "source": "./plugins/figma-ball-knowledge"
     }
   ]
 }

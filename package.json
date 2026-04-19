@@ -1,0 +1,21 @@
+{
+  "name": "figma-ball-knowledge",
+  "version": "1.0.0",
+  "description": "Claude Code marketplace: Figma workflow plugins by David Dimalanta",
+  "files": [
+    ".claude-plugin",
+    "plugins"
+  ],
+  "keywords": [
+    "claude-code",
+    "claude-plugin",
+    "figma",
+    "design"
+  ],
+  "author": "David Dimalanta <david.dimalanta@mail.utoronto.ca>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/davidjamesdimalanta/figma-ball-knowledge.git"
+  }
+}

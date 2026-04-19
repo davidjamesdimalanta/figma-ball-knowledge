@@ -1,0 +1,8 @@
+{
+  "name": "figma-ball-knowledge",
+  "version": "1.0.0",
+  "description": "Orchestrator skill for Figma design work in Claude Code. Parses designer intent, runs discovery against the Figma MCP, resolves URL targets, and progressively discloses capability files for reading, frames, components, tokens, vectors, documentation, files, and code.",
+  "author": {
+    "name": "David Dimalanta"
+  }
+}
