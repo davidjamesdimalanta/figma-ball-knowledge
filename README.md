@@ -1,6 +1,6 @@
 # figma-ball-knowledge
 
-Figma workflow skills for Claude Code. Designed for Figma designers working through an LLM — type `/figma-ball-knowledge` in Claude Code and the orchestrator parses your intent, runs discovery against the Figma MCP server, and progressively discloses only the capability files the current task needs.
+Figma workflow skills for Claude — works in both **Claude Desktop** (no CLI needed) and **Claude Code**. The orchestrator parses your intent, runs discovery against the Figma MCP server, and reads only the capability files the current task needs.
 
 Not a framework, not a code-gen wrapper. Claude writes plain `use_figma` scripts against the Figma MCP; these skills are the reference library and orchestration that make those scripts reliable across a growing set of design workflows.
 
@@ -26,24 +26,26 @@ The orchestrator (`figma-ball-knowledge`) handles every Figma request end-to-end
 
 ## Install
 
+### Claude Desktop (no CLI needed)
+
+**Step 1 — Download the skill file.**
+Go to the [latest release](https://github.com/davidjamesdimalanta/figma-ball-knowledge/raw/main/figma-ball-knowledge.skill) and download `figma-ball-knowledge.skill`.
+
+**Step 2 — Add it to Claude Desktop.**
+Open Claude Desktop → click your profile icon → **Customize** → **Skills** → upload `figma-ball-knowledge.skill`.
+
+**Step 3 — Connect the Figma MCP server.**
+In Claude Desktop → **Settings** → **Integrations** → add the Figma MCP server URL `https://mcp.figma.com/mcp`. See [Figma's MCP documentation](https://help.figma.com/hc/en-us/articles/32132100833559) for details.
+
+**Step 4 — Start a new conversation** and describe your Figma task. Claude will pick up the skill automatically.
+
+---
+
+### Claude Code (CLI)
+
 This plugin is installed via the `figma-ball-knowledge` marketplace.
 
 **Step 1 — Add the marketplace** (once, in `~/.claude/settings.json`):
-
-```json
-{
-  "extraKnownMarketplaces": {
-    "figma-ball-knowledge": {
-      "source": {
-        "source": "npm",
-        "package": "figma-ball-knowledge"
-      }
-    }
-  }
-}
-```
-
-Or, if you prefer to source directly from GitHub:
 
 ```json
 {
@@ -68,7 +70,25 @@ claude plugin install figma-ball-knowledge@figma-ball-knowledge
 
 ## Usage
 
-Type `/figma-ball-knowledge` in Claude Code before your request, or just mention a Figma file in your prompt:
+### Claude Desktop
+
+Just describe your task naturally — the skill triggers automatically:
+
+```
+Recreate the screen at figma.com/design/<key>/<name>?node-id=<id>
+```
+
+```
+Swap every instance of the old Button component with the new one in this file.
+```
+
+```
+Apply our color tokens to all hardcoded fills in the file.
+```
+
+### Claude Code
+
+Type `/figma-ball-knowledge` before your request, or just mention a Figma file:
 
 ```
 /figma-ball-knowledge
@@ -116,7 +136,7 @@ figma-ball-knowledge/
 
 ## Requirements
 
-- Claude Code (or any Anthropic-skill host that loads plugins with skills).
+- Claude Desktop or Claude Code (any Anthropic-skill host that supports `.skill` files or plugins).
 - The Figma MCP server connected to that client.
 - Figma plan with library publishing if `search_design_system` should return remote components and variables.
 
