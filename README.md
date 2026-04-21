@@ -1,30 +1,50 @@
+![figma-ball-knowledge](banner.png)
+
 # figma-ball-knowledge
 
-Figma workflow skills for Claude — works in both **Claude Desktop** (no CLI needed) and **Claude Code**. The orchestrator parses your intent, runs discovery against the Figma MCP server, and reads only the capability files the current task needs.
+**Designers → [Download the latest release](https://github.com/davidjamesdimalanta/figma-ball-knowledge/releases/latest)** — grab `figma-ball-knowledge.skill` and drop it into Claude Desktop.
 
-Not a framework, not a code-gen wrapper. Claude writes plain `use_figma` scripts against the Figma MCP; these skills are the reference library and orchestration that make those scripts reliable across a growing set of design workflows.
+**Developers → install in Claude Code:**
 
-## What it does
+```bash
+claude plugin install figma-ball-knowledge@figma-ball-knowledge
+```
 
-The orchestrator (`figma-ball-knowledge`) handles every Figma request end-to-end:
+(Also runs in Cursor and Codex — see [Install](#install) below.)
 
-1. **Discovery audit** — one batched parallel round: local variable collections, published library components, remote library variables, file metadata, and a visual baseline screenshot.
-2. **URL target resolution** — converts any `node-id` in a `figma.com` URL to the internal form and confirms the page, name, and type.
-3. **Capability selection** — reads only the capability files needed for the task: `figma-read`, `figma-frames`, `figma-components`, `figma-tokens`, `figma-vectors`, `figma-documentation`, `figma-files`. Always reads `figma-code` before any write.
-4. **Execution plan** — prints the plan (target, capabilities, component map, token sources, ordered sections, any ambiguity question) before any write. You can correct it before Claude touches the canvas.
-5. **Build** — writes one section per `use_figma` call, with `get_screenshot` between phases.
+---
 
-## Supported workflows
+## What it is
 
-- **Screen and component recreation** from a reference URL (Figma-to-Figma or web-to-Figma translation).
-- **Applying, migrating, or creating design system tokens** — color, spacing, typography — with WCAG contrast checks.
-- **Component instance management** — creating components, swapping every instance of a deprecated component, wiring prototype reactions to boolean variables.
-- **Style guide and documentation generation** — token specimens, Code Connect mappings, FigJam diagrams, token exports for dev handoff.
-- **Vector work** — icons, shapes, boolean ops, gradients, image fills, effects, node exports.
-- **File and page creation** — new files, new pages inside an existing file.
-- **Reading existing design state** for audits, refactor scoping, or translation to code.
+A Claude skill suite that makes AI agents work with Figma the way a designer would — using your design system, not hardcoded values.
+
+It's an **orchestrator** that routes each task to capability files on demand: reading existing design state, frame and layout creation, component instances, token binding, documentation, vector work, file management. Before writing anything, it runs a **discovery audit** against your file — local variables, remote library variables, published components, text and paint styles — then emits an execution plan you can correct before it touches the canvas.
+
+Not a framework, not a code-gen wrapper. Claude writes plain `use_figma` scripts against the Figma MCP; these skills are the reference library and orchestration that make those scripts reliable.
+
+## Why use it
+
+The new wave of AI design tools (Lovable, Bolt, v0, Magic Patterns, Google Stitch, Claude artifacts) assumes a greenfield. If your org already runs on Figma — with years of tokens, components, and documentation — none of them have a reliable way to port back in.
+
+Figma's own MCP closes the loop, but without design-domain context agents fail in predictable ways:
+
+- Hardcoded hex fills instead of token bindings.
+- Frames with broken auto-layout (`fill` inside a `hug` collapses to 10px).
+- Raw frames where a published component exists.
+- Long tool-call loops that exhaust your token budget before producing usable output.
+
+`figma-ball-knowledge` encodes the Figma-specific knowledge the agent was missing, so you get:
+
+- **Figma-native output** — components from your library, fills bound to your tokens, auto-layout that holds up.
+- **Fewer wasted tokens** — the agent reaches correct tool calls faster, so sessions stay inside usage limits.
+- **No black-box writes** — every write is preceded by a plan (target, component map, token sources, build phases) you can correct.
+- **Portable across hosts** — Claude Desktop, Claude Code, Cursor, and Codex, same skill files.
+
+Built for designers who want the speed of agents without abandoning the design system they've already invested in.
 
 ## Install
+
+Supported hosts: **Claude Desktop**, **Claude Code**, **Cursor**, **Codex**. All four use the same skill files — only the install path and tool-name mapping differ.
 
 ### Claude Desktop (no CLI needed)
 
@@ -68,6 +88,72 @@ claude plugin install figma-ball-knowledge@figma-ball-knowledge
 
 **Step 3 — Connect the Figma MCP server.** The skill calls `use_figma`, `search_design_system`, `get_metadata`, `get_screenshot`, `get_design_context`, `get_variable_defs`. See [Figma's MCP documentation](https://help.figma.com/hc/en-us/articles/32132100833559) for setup.
 
+---
+
+### Cursor
+
+Cursor loads the skill as an auto-attached rule — it activates when you mention Figma, paste a `figma.com` URL, or describe a Figma task.
+
+**Step 1 — Add the rule to your project.**
+
+Copy `.cursor/rules/figma-ball-knowledge.mdc` and the `plugins/figma-ball-knowledge/skills/figma-ball-knowledge/` directory into your project, preserving paths. The rule references the skill files by relative path.
+
+The quickest way is to clone the repo and symlink:
+
+```bash
+git clone https://github.com/davidjamesdimalanta/figma-ball-knowledge.git
+# From your project root:
+ln -s <path-to-clone>/.cursor/rules/figma-ball-knowledge.mdc .cursor/rules/figma-ball-knowledge.mdc
+ln -s <path-to-clone>/plugins/figma-ball-knowledge/skills/figma-ball-knowledge plugins/figma-ball-knowledge/skills/figma-ball-knowledge
+```
+
+**Step 2 — Configure the Figma MCP server.**
+
+Add to `.cursor/mcp.json` (project) or `~/.cursor/mcp.json` (global):
+
+```json
+{
+  "mcpServers": {
+    "figma": {
+      "url": "https://mcp.figma.com/mcp"
+    }
+  }
+}
+```
+
+Restart Cursor. Confirm the Figma MCP tools appear in Settings → MCP.
+
+**Step 3 — Describe a Figma task** (e.g. paste a `figma.com/design/...` URL). The rule auto-attaches and Cursor follows the orchestrator.
+
+Full details: [`plugins/figma-ball-knowledge/skills/figma-ball-knowledge/references/cursor-tools.md`](plugins/figma-ball-knowledge/skills/figma-ball-knowledge/references/cursor-tools.md)
+
+---
+
+### Codex
+
+Tell Codex:
+
+```
+Fetch and follow instructions from https://raw.githubusercontent.com/davidjamesdimalanta/figma-ball-knowledge/main/.codex/INSTALL.md
+```
+
+Or install manually:
+
+```bash
+git clone https://github.com/davidjamesdimalanta/figma-ball-knowledge.git ~/.codex/figma-ball-knowledge
+mkdir -p ~/.agents/skills
+ln -s ~/.codex/figma-ball-knowledge/plugins/figma-ball-knowledge/skills/figma-ball-knowledge ~/.agents/skills/figma-ball-knowledge
+```
+
+Then add the Figma MCP server to `~/.codex/config.toml`:
+
+```toml
+[mcp_servers.figma]
+url = "https://mcp.figma.com/mcp"
+```
+
+Restart Codex. Full details: [`.codex/INSTALL.md`](.codex/INSTALL.md)
+
 ## Usage
 
 ### Claude Desktop
@@ -98,12 +184,37 @@ as a mobile-first React mockup. Match token usage to the existing system.
 
 The orchestrator runs discovery, resolves the URL, reads the relevant capability files, and emits an execution plan before any write.
 
+### Cursor
+
+Describe the Figma task naturally. The rule auto-attaches on Figma-related prompts:
+
+```
+Recreate figma.com/design/<key>/<name>?node-id=<id> as a mobile-first mockup.
+```
+
+Questions come back as plain-text chat messages (no `AskUserQuestion` tool on Cursor — see `references/cursor-tools.md`).
+
+### Codex
+
+Same — describe the task naturally. Codex auto-activates the skill based on its description:
+
+```
+Apply our color tokens to all hardcoded fills in figma.com/design/<key>/<name>
+```
+
+Questions come back as plain text. See `references/codex-tools.md` for the full tool mapping.
+
 ## Directory layout
 
 ```
 figma-ball-knowledge/
   .claude-plugin/
-    marketplace.json                  marketplace manifest
+    marketplace.json                  Claude Code marketplace manifest
+  .codex/
+    INSTALL.md                        Codex install instructions
+  .cursor/
+    rules/
+      figma-ball-knowledge.mdc        Cursor auto-attached rule
   plugins/
     figma-ball-knowledge/
       .claude-plugin/plugin.json      plugin manifest
@@ -121,6 +232,8 @@ figma-ball-knowledge/
           figma-personal-workflow.md  designer preferences capture protocol
           references/
             tool-reference.md         every MCP tool, grouped read/write
+            cursor-tools.md           Cursor tool mapping (AskUserQuestion → plain text)
+            codex-tools.md            Codex tool mapping (AskUserQuestion → plain text)
             component-swap.md         swap-every-instance workflow
             component-reactions.md    prototype reactions with CONDITIONAL pattern
             vector-effects-exports.md gradients, shadows, blur, node exports
@@ -136,8 +249,8 @@ figma-ball-knowledge/
 
 ## Requirements
 
-- Claude Desktop or Claude Code (any Anthropic-skill host that supports `.skill` files or plugins).
-- The Figma MCP server connected to that client.
+- A supported host: **Claude Desktop**, **Claude Code**, **Cursor**, or **Codex**.
+- The Figma MCP server connected to that host (see each install section above).
 - Figma plan with library publishing if `search_design_system` should return remote components and variables.
 
 ## Contributing

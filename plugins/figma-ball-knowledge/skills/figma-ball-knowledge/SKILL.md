@@ -15,6 +15,8 @@ Read this skill first on any Figma request. It parses the designer's intent, run
 
 Any time you need to ask the designer a question — for clarification, ambiguity resolution, preference confirmation, or page selection — use the `AskUserQuestion` tool. This applies at every step without exception.
 
+**Non-Claude hosts:** `AskUserQuestion` is a Claude Code / Claude Desktop tool. When running under Cursor, Codex, or any other host that lacks this tool, ask the question in plain text and present options as a numbered list if the skill specifies multiple choice. See `references/cursor-tools.md` (Cursor) or `references/codex-tools.md` (Codex) for the full tool mapping.
+
 ---
 
 ## Capability Files
@@ -42,6 +44,8 @@ Longer workflows live alongside their parent capability files. Read these when t
 | `references/component-swap.md` | Replacing every instance of a deprecated component across a file |
 | `references/component-reactions.md` | Wiring prototype reactions to boolean variables (filter chips, toggle states) |
 | `references/vector-effects-exports.md` | Applying effects, gradients, or setting up node exports |
+| `references/cursor-tools.md` | Tool-name translation when running under Cursor |
+| `references/codex-tools.md` | Tool-name translation when running under Codex |
 
 ## Bundled Scripts
 
