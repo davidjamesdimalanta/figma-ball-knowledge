@@ -1,6 +1,6 @@
 ---
 name: figma-ball-knowledge
-description: "Orchestrator for Figma design work. Read this skill first on every Figma request. Parses designer intent, runs discovery against the Figma MCP, resolves URL targets, and progressively discloses the capability files (figma-read, figma-frames, figma-components, figma-tokens, figma-vectors, figma-documentation, figma-files, figma-code, figma-personal-workflow) needed for the task."
+description: "Use when the user mentions Figma, pastes a figma.com URL or node-id, or asks to recreate a screen, build frames, import components, apply design tokens, swap component instances, audit a design system, bind variables, generate Code Connect, create FigJam diagrams, or do any design work in a Figma file. Covers reading existing design state, frame and auto-layout creation, library components, variables and styles, vectors, documentation, and file management via the Figma MCP."
 metadata:
   mcp-server: figma
 ---

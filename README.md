@@ -117,21 +117,24 @@ Or [install manually](.codex/INSTALL.md).
 
 ## Usage
 
-Describe your task naturally. On every host, the skill auto-triggers when you mention Figma or paste a `figma.com` URL.
+Start every request with `/figma-ball-knowledge` to invoke the skill. Without the prefix, the host won't load it.
 
 ```
+/figma-ball-knowledge
 Recreate figma.com/design/<key>/<name>?node-id=<id> as a mobile-first mockup.
 ```
 
 ```
+/figma-ball-knowledge
 Swap every instance of the old Button component with the new one.
 ```
 
 ```
+/figma-ball-knowledge
 Apply our color tokens to all hardcoded fills in this file.
 ```
 
-In Claude Code, you can prefix with `/figma-ball-knowledge` to invoke the skill directly. On Cursor and Codex, clarifying questions come back as plain chat (no `AskUserQuestion` tool — see [`cursor-tools.md`](plugins/figma-ball-knowledge/skills/figma-ball-knowledge/references/cursor-tools.md) or [`codex-tools.md`](plugins/figma-ball-knowledge/skills/figma-ball-knowledge/references/codex-tools.md)).
+On Cursor and Codex, clarifying questions come back as plain chat (no `AskUserQuestion` tool — see [`cursor-tools.md`](plugins/figma-ball-knowledge/skills/figma-ball-knowledge/references/cursor-tools.md) or [`codex-tools.md`](plugins/figma-ball-knowledge/skills/figma-ball-knowledge/references/codex-tools.md)).
 
 ## Requirements
 
