@@ -2,7 +2,7 @@
 
 # figma-ball-knowledge
 
-A Claude skill suite that makes AI agents work with Figma the way a designer would — using your design system, not hardcoded values.
+For agents, its a Claude skill suite that exposes the right way interact with Figma MCP. For designers, its a set of rules that tells agents how to ask and parse designer intent.
 
 ### Get it
 
