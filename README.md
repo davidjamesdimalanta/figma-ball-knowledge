@@ -2,7 +2,7 @@
 
 # figma-ball-knowledge
 
-For agents, its a Claude skill suite that exposes the right way interact with Figma MCP. For designers, its a set of rules that tells agents how to ask and parse designer intent.
+For agents, its a Claude skill suite that exposes the right way to interact with Figma MCP. For designers, its a set of rules that tells agents how to ask and parse designer intent.
 
 ### Get it
 
