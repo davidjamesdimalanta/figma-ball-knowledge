@@ -26,7 +26,7 @@ Before writing anything, it runs a **discovery audit** against your file (local 
 
 ## Why use it
 
-The new wave of AI design tools (Lovable, Bolt, v0, Stitch, Claude artifacts) assumes a greenfield. If your org already runs on Figma, none of them port back in reliably.
+The new wave of AI design tools (Lovable, Bolt, v0, Stitch, Claude design) assumes a greenfield. If your org already runs on Figma, none of them port back in reliably.
 
 Figma's own MCP closes the loop — but without design-domain context, agents fail in predictable ways:
 
