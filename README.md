@@ -59,22 +59,8 @@ All four hosts use the same skill files. Pick yours.
 <details>
 <summary><b>Claude Code</b> — CLI</summary>
 
-Add the marketplace once in `~/.claude/settings.json`:
-
-```json
-{
-  "extraKnownMarketplaces": {
-    "figma-ball-knowledge": {
-      "source": { "source": "github", "repo": "davidjamesdimalanta/figma-ball-knowledge" }
-    }
-  }
-}
-```
-
-Install and connect Figma MCP:
-
 ```bash
-claude plugin install figma-ball-knowledge@figma-ball-knowledge
+npx skills add davidjamesdimalanta/figma-ball-knowledge
 ```
 
 See [Figma MCP setup](https://help.figma.com/hc/en-us/articles/32132100833559).
@@ -84,12 +70,10 @@ See [Figma MCP setup](https://help.figma.com/hc/en-us/articles/32132100833559).
 <details>
 <summary><b>Cursor</b> — auto-attached rule</summary>
 
-Clone and symlink into your project:
-
 ```bash
-git clone https://github.com/davidjamesdimalanta/figma-ball-knowledge.git
-ln -s <clone>/.cursor/rules/figma-ball-knowledge.mdc .cursor/rules/figma-ball-knowledge.mdc
-ln -s <clone>/plugins/figma-ball-knowledge/skills/figma-ball-knowledge plugins/figma-ball-knowledge/skills/figma-ball-knowledge
+npx skills add davidjamesdimalanta/figma-ball-knowledge
+mkdir -p .cursor/rules
+ln -s ../../.agents/skills/figma-ball-knowledge/references/cursor-rule.mdc .cursor/rules/figma-ball-knowledge.mdc
 ```
 
 Add Figma MCP to `.cursor/mcp.json`:
@@ -105,13 +89,18 @@ Restart Cursor. Full details: [`references/cursor-tools.md`](plugins/figma-ball-
 <details>
 <summary><b>Codex</b></summary>
 
-Tell Codex:
-
-```
-Fetch and follow instructions from https://raw.githubusercontent.com/davidjamesdimalanta/figma-ball-knowledge/main/.codex/INSTALL.md
+```bash
+npx skills add davidjamesdimalanta/figma-ball-knowledge
 ```
 
-Or [install manually](.codex/INSTALL.md).
+Add Figma MCP to `~/.codex/config.toml`:
+
+```toml
+[mcp_servers.figma]
+url = "https://mcp.figma.com/mcp"
+```
+
+See [Figma MCP docs](https://help.figma.com/hc/en-us/articles/32132100833559). For manual install without npx, see [`.codex/INSTALL.md`](.codex/INSTALL.md).
 
 </details>
 
@@ -148,11 +137,11 @@ On Cursor and Codex, clarifying questions come back as plain chat (no `AskUserQu
 ```
 figma-ball-knowledge/
   .claude-plugin/marketplace.json       Claude Code marketplace manifest
-  .codex/INSTALL.md                     Codex install instructions
-  .cursor/rules/figma-ball-knowledge.mdc Cursor auto-attached rule
+  .codex/INSTALL.md                     Codex install instructions (manual path)
+  .cursor/rules/figma-ball-knowledge.mdc Cursor rule for dev-in-repo use
   plugins/figma-ball-knowledge/
     .claude-plugin/plugin.json          plugin manifest
-    skills/figma-ball-knowledge/
+    skills/figma-ball-knowledge/        source of truth for the skill
       SKILL.md                          orchestrator; read first
       figma-read.md                     reading existing design state
       figma-frames.md                   frame and layout creation
@@ -163,8 +152,9 @@ figma-ball-knowledge/
       figma-files.md                    file and page management
       figma-code.md                     Figma Plugin API constraints
       figma-personal-workflow.md        designer preferences capture
-      references/                       tool mappings, workflow recipes
+      references/                       tool mappings, workflow recipes, cursor-rule.mdc
       scripts/                          discovery audit, WCAG, swap guards
+  .agents/skills/figma-ball-knowledge/  active install after npx skills add
 ```
 
 </details>

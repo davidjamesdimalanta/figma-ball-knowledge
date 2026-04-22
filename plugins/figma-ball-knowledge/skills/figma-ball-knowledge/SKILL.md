@@ -154,19 +154,15 @@ Always read `figma-code.md` before writing any `use_figma` script. Its constrain
 
 Before any write call, emit this plan. Fires every time.
 
-```
-EXECUTION PLAN
-Task           : [one-sentence description]
-Target         : new frame at rightEdge + 200 on page [name] (node [id])
-                 — or — editing [specific property] on node [id]
-Capabilities   : [list of selected capability files]
-Component map  : [element → component key] / [element → raw frame if no match]
-                 (omit if figma-components not selected)
-Token sources  : [variable collection names to use]
-                 (omit if figma-tokens not selected)
-Sections       : [ordered list of build phases]
-Ambiguity      : [one question if any execution decision is genuinely unclear — otherwise "none"]
-```
+| Field | Value |
+|---|---|
+| **Task** | [one-sentence description] |
+| **Target** | New frame at rightEdge + 200 on page `[name]` (node `[id]`) — or — editing `[specific property]` on node `[id]` |
+| **Capabilities** | [list of selected capability files] |
+| **Component map** | `[element]` → `[component key]` / `[element]` → raw frame if no match _(omit if figma-components not selected)_ |
+| **Token sources** | [variable collection names to use] _(omit if figma-tokens not selected)_ |
+| **Sections** | [ordered list of build phases] |
+| **Ambiguity** | [one question if any execution decision is genuinely unclear — otherwise "none"] |
 
 The plan is visible to the designer before any write. It naturally invites correction. If the ambiguity line contains a question, deliver it using `AskUserQuestion` and wait for the answer before proceeding.
 

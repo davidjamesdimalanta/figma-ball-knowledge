@@ -4,5 +4,8 @@
   "description": "A skill that empowers agents using Figma MCP. It contains imporant tool calls and rules for Figma design work in Claude Desktop, Claude Code, Codex, Cursor, and a set of rules that tells agents how to ask and parse designer intent.",
   "author": {
     "name": "David Dimalanta"
-  }
+  },
+  "skills": [
+    "skills/figma-ball-knowledge/SKILL.md"
+  ]
 }
