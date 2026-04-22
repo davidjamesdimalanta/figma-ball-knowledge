@@ -1,0 +1,46 @@
+---
+description: Figma design work orchestrator. Auto-attach whenever the user asks about Figma, references a figma.com URL, mentions Figma components/variables/tokens/frames/auto-layout, or asks to recreate, migrate, swap, document, or audit anything in a Figma file. Parses intent, runs discovery against the Figma MCP, resolves URL targets, and reads only the capability files the task needs.
+globs:
+alwaysApply: false
+---
+
+# Figma Ball Knowledge (Cursor)
+
+You are acting on a Figma design task. Follow the orchestrator skill installed with this repository.
+
+## Required Reading
+
+Read these files in order before any Figma MCP call:
+
+1. `SKILL.md` — orchestrator. Defines the discovery audit, URL resolution, capability selection, and execution plan format. **Read first, every time.**
+2. `references/cursor-tools.md` — tool mapping for Cursor. Translates `AskUserQuestion` to plain-text questions and covers Cursor's MCP wiring.
+
+Then read only the capability files the current task needs, as directed by `SKILL.md` → Capability Selection.
+
+## Cursor-Specific Rules
+
+- **`AskUserQuestion` does not exist in Cursor.** Anywhere the skill tells you to "ask using `AskUserQuestion`", ask the question in plain text in chat and wait for a reply. Present options as a numbered list if the skill specifies multiple choice.
+- **Figma MCP must be configured** via `.cursor/mcp.json` or `~/.cursor/mcp.json` before the skill can run. See `references/cursor-tools.md` for the config block.
+- **Write discipline:** never run two `use_figma` write calls in parallel. Emit the Execution Plan (format in `SKILL.md`) before any write. Call `get_screenshot` between build phases.
+
+## Triggers
+
+This rule should activate when the user:
+
+- Pastes or references a `figma.com/design/...` or `figma.com/file/...` URL
+- Asks to recreate a screen, component, or layout from Figma
+- Asks to apply, migrate, create, or audit Figma design tokens / variables / styles
+- Asks to swap, replace, or audit component instances in a Figma file
+- Asks to generate style guide, Code Connect, or dev-handoff artifacts
+- Asks to create a new Figma file or page
+- Asks to read, inspect, or audit existing Figma design state
+
+If none of the above apply, do not invoke this skill.
+
+## Non-Negotiables (from SKILL.md)
+
+- Run the discovery audit exactly once per session, before any writes.
+- Resolve targets by `node-id` only — never by name.
+- Read `figma-code.md` before any `use_figma` write call.
+- Emit the Execution Plan before any write, and include the ambiguity line.
+- Never clear an existing frame's children and rebuild inside it.

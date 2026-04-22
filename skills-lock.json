@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "skills": {
+    "emil-design-eng": {
+      "source": "emilkowalski/skill",
+      "sourceType": "github",
+      "computedHash": "8bdf9e4e6de7a4969147bf4828a4ad2c5aacd9fba4b690b250a85e0467ca387d"
+    },
+    "figma-ball-knowledge": {
+      "source": "davidjamesdimalanta/figma-ball-knowledge",
+      "sourceType": "github",
+      "computedHash": "c7549be4d991465a46b858abbf57da535296347d4f763bf072ff8296676d8fec"
+    }
+  }
+}
