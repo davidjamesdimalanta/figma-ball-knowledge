@@ -93,9 +93,10 @@ This confirms the preference is active without requiring the designer to re-conf
 
 | Preference type | Skill to update |
 |---|---|
+| Research depth, competitive audit defaults, BLUF format preferences, stakeholder communication style | `figma-research` |
 | How to approach a new screen — fidelity, layout defaults, iteration mode | `figma-frames` |
 | Component anatomy defaults, variant depth, naming conventions | `figma-components` |
-| Documentation audience, token detail level, section order | `figma-documentation` |
+| Documentation audience, token detail level, section order, tone calibration | `figma-documentation` |
 | Token architecture defaults, color system preferences, spacing base | `figma-tokens` |
 | Default code framework, token output format, Code Connect annotation depth | `figma-documentation` |
 | Vector and icon handling defaults, export format preferences | `figma-vectors` |

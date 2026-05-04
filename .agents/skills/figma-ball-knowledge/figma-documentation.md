@@ -1,6 +1,6 @@
 ---
 name: figma-documentation
-description: "Capability reference for design system documentation, style guide specimens, Code Connect setup, token export, and FigJam diagrams. Use whenever creating a style guide, documenting a component, setting up Code Connect mappings, exporting tokens as CSS variables, or building a FigJam architecture diagram."
+description: "Capability reference for design system documentation, style guide specimens, Code Connect setup, token export, FigJam diagrams, and writing quality standards. Use whenever creating a style guide, documenting a component, setting up Code Connect mappings, exporting tokens as CSS variables, building a FigJam architecture diagram, formatting research output, or ensuring documentation meets designer-first quality standards."
 metadata:
   mcp-server: figma
 ---
@@ -202,6 +202,76 @@ Diagrams are placed on the current FigJam canvas. If working in a design file, s
 
 ---
 
+## Writing Quality Standards for Documentation
+
+All documentation frames, annotation text, and research output visible to designers and stakeholders follow these standards. These rules prevent mechanical-sounding output that undermines credibility.
+
+### Tone Calibration
+
+Documentation tone adapts to context:
+
+| Context | Tone | Style |
+|---|---|---|
+| Error handling, accessibility failures, token gaps | Matter-of-fact, serious | Direct, no contractions, precise |
+| Feature discovery, onboarding, new capabilities | Approachable, confident | Conversational, high energy, action-oriented |
+| Research synthesis, competitive analysis | Formal but approachable | "Friendly expert" — knowledgeable, accessible, opinionated |
+| Design system reference | Neutral, scannable | Short sentences, heavy use of tables and code blocks |
+
+### Anti-Mechanical-Register Checklist
+
+Before finalizing any text content in documentation frames, scan for and revise:
+
+- **Three-part list compulsion**: Not every concept has exactly three parts. Use 2, 4, or 5 items when the content demands it.
+- **Abstract noun preference**: Replace "strategic initiatives" with the specific action. Replace "optimization" with what is being changed and how.
+- **Summary conclusions**: End sections with the implication or the next question, never by restating what was just said.
+- **Ambient enthusiasm**: Remove "fascinating," "remarkable," "innovative" unless the evidence earning the adjective is in the same sentence.
+- **Absence of opinion**: Documentation must state which approach is recommended for this specific context. "Both approaches have merits" fails the designer.
+
+### Grounding Abstractions
+
+Every claim in documentation must be grounded in concrete evidence:
+
+- **Wrong**: "This color system enhances user engagement"
+- **Right**: "This color system uses a 7:1 contrast ratio on primary text, exceeding WCAG AAA for the 40% of users on low-brightness displays"
+
+- **Wrong**: "The spacing scale optimizes readability"
+- **Right**: "The spacing scale uses 8px as the base unit, aligning to a 4px grid for consistent touch targets at 48px minimum"
+
+---
+
+## Research-Informed Documentation
+
+When `figma-research` was selected earlier in the workflow, documentation frames can include a research context section:
+
+### Research Context Frame
+
+Place adjacent to the documented component or screen:
+
+```js
+const researchFrame = figma.createFrame();
+researchFrame.name = '_research-context/' + componentName;
+researchFrame.layoutMode = 'VERTICAL';
+researchFrame.primaryAxisSizingMode = 'AUTO';
+researchFrame.counterAxisSizingMode = 'AUTO';
+researchFrame.paddingLeft = researchFrame.paddingRight = 16;
+researchFrame.paddingTop = researchFrame.paddingBottom = 16;
+researchFrame.itemSpacing = 8;
+researchFrame.clipsContent = false;
+researchFrame.x = componentSet.x + componentSet.width + 80;
+researchFrame.y = componentSet.y + componentSet.height + 40;
+figma.currentPage.appendChild(researchFrame);
+```
+
+Content for the research context frame:
+- **Recommendation**: One sentence — what was built and why
+- **Key insight**: The most important "So What?" that drove this design decision
+- **Competitive reference**: Which competitor informed this direction and how this design differs
+- **Open questions**: Unresolved research questions that should be validated in user testing
+
+The `_` prefix hides the research context from library publishing while keeping it visible to the design team.
+
+---
+
 ## Anti-Patterns
 
 - Building all documentation phases in one script — if it fails, nothing is recoverable.
@@ -213,3 +283,7 @@ Diagrams are placed on the current FigJam canvas. If working in a design file, s
 - Generating Code Connect without checking `get_code_connect_map` first — risks conflicting with existing mappings.
 - Mapping Hover, Active, and Focus variants as Code Connect props — these belong to CSS.
 - Hardcoding hex values in color specimens when variable bindings are available.
+- Using ambient enthusiasm in documentation text — every adjective must be earned by evidence in the same sentence.
+- Ending documentation sections with a summary restatement instead of an implication or next step.
+- Writing documentation that avoids a recommendation — state which approach is best for this context.
+- Presenting competitive analysis as a feature list without design implications.

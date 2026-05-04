@@ -41,6 +41,23 @@ COMPONENT MAP (include in execution plan)
 
 **Building a matched element as a raw frame is a build error.** If `importComponentByKeyAsync` throws, fall back to a raw frame and note the fallback explicitly — do not build from scratch silently.
 
+### Competitive-Informed Component Decisions
+
+When `figma-research` was selected and a competitive audit is available, use the audit findings to inform component decisions:
+
+- **Table stakes components**: Elements every competitor has (search bars, navigation patterns, filter chips) must use library components or follow the established interaction pattern. Building a novel version without research justification is a design risk.
+- **Differentiator components**: Elements that represent a competitive advantage should be built as new components with clear documentation of the design rationale. Reference the specific competitive gap the component fills.
+- **Experience transitions**: Successful patterns from adjacent products or indirect competitors that can be adapted. Document the source and the adaptation in the component's annotation frame.
+
+When the component map includes elements informed by competitive research, note the source in the execution plan:
+
+```
+COMPONENT MAP (competitive-informed)
+- Filter chip      → key: def456  ✓ (table stakes — all competitors)
+- Smart suggestion → no match   → raw frame (differentiator — competitor X lacks this)
+- Bottom sheet nav → key: jkl012  ✓ (experience transition from competitor Y's mobile pattern)
+```
+
 ---
 
 ## Importing and Instantiating Library Components

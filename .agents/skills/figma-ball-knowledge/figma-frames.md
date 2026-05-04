@@ -135,6 +135,22 @@ Names use `[Placeholder / Purpose]` format so they are easy to find and replace.
 
 ---
 
+## Research-Informed Fidelity Selection
+
+When `figma-research` was selected in the capability selection phase, fidelity level is calibrated to the research confidence:
+
+| Research Confidence | Fidelity Level | Frame Approach |
+|---|---|---|
+| **High** — validated by multiple sources, competitive audit complete, "So What?" requirements defined | Production-ready | Full token binding, library components, precise spacing |
+| **Medium** — directional insights with some gaps, partial competitive data | High-fidelity wireframe | Library components where available, placeholder tokens for gaps, annotation frames for open questions |
+| **Low** — early exploration, hypothesis-driven, limited data | Low-fidelity placeholder | `[Placeholder / Purpose]` format, gray fills, focus on layout structure over visual polish |
+
+This calibration prevents over-investing in pixel-perfect work before the design direction is validated. When research confidence is low, the frame itself becomes a hypothesis — optimized for speed of iteration, not final polish.
+
+Match research depth to decision impact. Core product pivots get high-rigor, multi-source investigations. UI iterations get lightweight gut checks.
+
+---
+
 ## Auto-Layout Rules
 
 Set `layoutMode` before setting sizing modes. The order matters.

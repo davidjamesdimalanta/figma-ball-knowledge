@@ -1,13 +1,15 @@
 ---
 name: figma-ball-knowledge
-description: "Use when the user mentions Figma, pastes a figma.com URL or node-id, or asks to recreate a screen, build frames, import components, apply design tokens, swap component instances, audit a design system, bind variables, generate Code Connect, create FigJam diagrams, or do any design work in a Figma file. Covers reading existing design state, frame and auto-layout creation, library components, variables and styles, vectors, documentation, and file management via the Figma MCP."
+description: "Use when the user mentions Figma, pastes a figma.com URL or node-id, or asks to recreate a screen, build frames, import components, apply design tokens, swap component instances, audit a design system, bind variables, generate Code Connect, create FigJam diagrams, conduct competitive analysis, synthesize research for design decisions, or do any design work in a Figma file. Covers design research, reading existing design state, frame and auto-layout creation, library components, variables and styles, vectors, documentation, and file management via the Figma MCP."
 metadata:
   mcp-server: figma
 ---
 
 # Figma Ball Knowledge: Orchestrator
 
-Read this skill first on any Figma request. It parses the designer's intent, runs the discovery audit against the Figma MCP, resolves any URL targets, and progressively discloses the capability files the task actually needs. You do not need to read every capability file up front.
+Read this skill first on any Figma request. It parses the designer's intent, determines whether research or discovery is needed first, runs the appropriate audit against the Figma MCP, resolves any URL targets, and progressively discloses the capability files the task actually needs. You do not need to read every capability file up front.
+
+> **Designer-first principle:** This skill treats the designer as the primary stakeholder. Outputs are structured for design decision-making, not engineering handoff. When research informs a build, lead with the recommendation and the "So What?" — supporting data follows.
 
 ---
 
@@ -25,12 +27,13 @@ These are reference libraries, not sequential steps. Read the ones the current t
 
 | File | API surface covered |
 |---|---|
+| `figma-research.md` | Strategic research: competitive audits, PESTLE/SWOT, BLUF synthesis, "So What?" test, quality gates |
 | `figma-read.md` | Reading existing design state: get_design_context, get_metadata, get_variable_defs, source parsing |
 | `figma-frames.md` | Frame and layout creation: createFrame, auto-layout, rightEdge placement, section pattern |
 | `figma-components.md` | Component instances, library import, component creation, bottom-up build order |
 | `figma-tokens.md` | Variable and style binding, token architecture, WCAG, migration |
 | `figma-vectors.md` | Vectors, shapes, boolean ops, gradients, image fills |
-| `figma-documentation.md` | Style guide specimens, Code Connect, token export, FigJam diagrams |
+| `figma-documentation.md` | Style guide specimens, Code Connect, token export, FigJam diagrams, writing quality standards |
 | `figma-files.md` | File creation, page management |
 | `figma-code.md` | Figma Plugin API constraints: font loading, async lookup, sizing lifecycle, binding patterns |
 | `figma-personal-workflow.md` | Capturing and applying designer preferences |
@@ -127,6 +130,8 @@ Scan the message for structured signals and hold them as **Project Context**:
 | Product domain | "fintech", "SaaS", "health" | `domain` |
 | Screen / component type | named screen, named component | `targetType` |
 | Source reference | URL to existing design to recreate/translate | `sourceRef` |
+| Research signals | "competitive", "best-in-class", "industry standard", "landscape" | `researchNeeded` |
+| Stakeholder context | "present to", "share with team", "executive review" | `audienceType` |
 
 ---
 
@@ -136,35 +141,41 @@ Read the task and the Session Context. Mark every capability the task requires, 
 
 | Capability | Select when the task requires… |
 |---|---|
+| `figma-research` | New product feature with no precedent, competitive analysis, stakeholder synthesis, research-informed design direction, any signal in the `researchNeeded` context |
 | `figma-read` | Source reference provided, recreation/translation task, audit, reading existing tokens or structure |
 | `figma-frames` | Creating any new frame, screen, section, or layout scaffold |
 | `figma-components` | Any component instance, library import, component creation, or UI element that may exist in the design system |
 | `figma-tokens` | Applying, migrating, or creating design system color, spacing, or typography tokens |
 | `figma-vectors` | Icons, shapes, paths, boolean ops, gradients, image fills, effects, or exports |
-| `figma-documentation` | Style guide, Code Connect, token export, FigJam diagram, dev handoff artifact |
+| `figma-documentation` | Style guide, Code Connect, token export, FigJam diagram, dev handoff artifact, research report formatting |
 | `figma-files` | New file or new page creation |
 
-Multiple capabilities are the norm. A screen recreation with a mature design system typically needs figma-read + figma-frames + figma-components + figma-tokens.
+Multiple capabilities are the norm. A screen recreation with a mature design system typically needs figma-read + figma-frames + figma-components + figma-tokens. A new product feature with strategic ambiguity typically needs figma-research + figma-frames + figma-components + figma-tokens.
 
 Always read `figma-code.md` before writing any `use_figma` script. Its constraints apply universally.
 
 ---
 
-## Execution Plan
+## Execution Plan (BLUF Format)
 
-Before any write call, emit this plan. Fires every time.
+Before any write call, emit this plan. Fires every time. The plan leads with the recommendation (BLUF — Bottom Line Up Front) so the designer can confirm direction before any technical work begins.
 
 | Field | Value |
 |---|---|
+| **Recommendation** | [One sentence: what will be built and why — the "So What?" for this task] |
 | **Task** | [one-sentence description] |
 | **Target** | New frame at rightEdge + 200 on page `[name]` (node `[id]`) — or — editing `[specific property]` on node `[id]` |
 | **Capabilities** | [list of selected capability files] |
+| **Research synthesis** | [BLUF summary — recommendation, impact, confidence] _(omit if figma-research not selected)_ |
+| **Design requirements** | [Ordered list of insight → requirement mappings driving this build] _(omit if figma-research not selected)_ |
 | **Component map** | `[element]` → `[component key]` / `[element]` → raw frame if no match _(omit if figma-components not selected)_ |
 | **Token sources** | [variable collection names to use] _(omit if figma-tokens not selected)_ |
 | **Sections** | [ordered list of build phases] |
 | **Ambiguity** | [one question if any execution decision is genuinely unclear — otherwise "none"] |
 
 The plan is visible to the designer before any write. It naturally invites correction. If the ambiguity line contains a question, deliver it using `AskUserQuestion` and wait for the answer before proceeding.
+
+> **BLUF principle:** The recommendation field answers "What should we build?" in one sentence. If the designer reads nothing else, this sentence gives them enough to approve or redirect. Supporting evidence follows in the research synthesis and design requirements fields.
 
 ---
 
@@ -186,6 +197,31 @@ Every tool this skill calls, plus the rules that apply to every `use_figma` scri
 
 ---
 
+## Quality Gates for Research-Informed Tasks
+
+When `figma-research` is selected, enforce these gates before presenting the execution plan:
+
+1. **Circular Verification Ban**: Do not present information the designer already provided as a research "discovery."
+2. **Source Diversity**: When citing external references, draw from at least 3 unique domains. No single source exceeds 40% of the reasoning.
+3. **Grounded Abstractions**: Every recommendation must reference a specific observation or data point — never "this will enhance user engagement" without a concrete basis.
+4. **Recency Flag**: Data older than 18 months on fast-moving topics (UI trends, platform capabilities) must be flagged.
+5. **Point of View Required**: Every synthesis must state which approach is superior for this specific context. "There are advantages to both" is not a conclusion.
+
+---
+
+## Writing Quality Standards
+
+All outputs visible to the designer — execution plans, research syntheses, annotations, documentation — follow these standards:
+
+- **Lead with the action.** State what to do before explaining why.
+- **Ground abstractions in specifics.** Not "optimize the onboarding flow" but "move the CTA above the fold to capture the 40% of users on 6.5-inch screens."
+- **Vary rhythm.** Follow a detailed analysis with a short declarative sentence. Monotonous cadence signals mechanical output.
+- **Earn every adjective.** Remove "fascinating," "remarkable," or "innovative" unless the specific evidence that earned it is in the same sentence.
+- **End sections with implications, not summaries.** Do not restate what was just said — move forward into what it means for the next decision.
+- **Maintain a point of view.** A skilled researcher advocates for the user through the lens of business impact. Neutral observations without recommendations fail the "So What?" test.
+
+---
+
 ## Anti-Patterns
 
 - Running the discovery audit again while edits are in progress.
@@ -202,3 +238,7 @@ Every tool this skill calls, plus the rules that apply to every `use_figma` scri
 - Reading `node.vectorPaths` without error handling on any VECTOR node from an unknown source.
 - Selecting only one capability when the task clearly needs several.
 - Emitting an execution plan with no ambiguity and then asking clarifying questions anyway — plan first, then build.
+- Jumping to Figma builds on new product features without first assessing whether research is needed.
+- Presenting research without a point of view — every synthesis requires a recommendation.
+- Using ambient enthusiasm ("fascinating opportunity") in place of grounded evidence.
+- Delivering a competitive audit as a feature list without "So What?" implications.
